@@ -20,6 +20,11 @@ class Login extends Component {
     history.push('/gameScreen');
   };
 
+  handleClickConfig = () => {
+    const { history } = this.props;
+    history.push('/settings');
+  };
+
   render() {
     const { name, email } = this.state;
     return (
@@ -55,6 +60,7 @@ class Login extends Component {
           </form>
           <button
             data-testid="btn-settings"
+            onClick={ this.handleClickConfig }
           >
             Configurações
           </button>
