@@ -1,4 +1,6 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
+import { returnToken } from '../tests/helpers/API';
 
 class Login extends Component {
   state = {
@@ -9,6 +11,13 @@ class Login extends Component {
   handlechange = ({ target }) => {
     const { name, value } = target;
     this.setState({ [name]: value });
+  };
+
+  handleClick = async () => {
+    const { history } = this.props;
+    const token = await returnToken();
+    localStorage.setItem('token', JSON.stringify(token));
+    history.push('/gameScreen');
   };
 
   render() {
@@ -39,13 +48,26 @@ class Login extends Component {
               type="button"
               disabled={ !name || !email }
               data-testid="btn-play"
+              onClick={ this.handleClick }
             >
               Play
             </button>
           </form>
+          <button
+            data-testid="btn-settings"
+          >
+            Configurações
+          </button>
         </main>
       </div>
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
+
 export default Login;
