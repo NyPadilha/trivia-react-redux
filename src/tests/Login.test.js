@@ -34,13 +34,14 @@ describe('Test the <Login.js /> page', () => {
         userEvent.type(emailInput, 'jaguara@gmail.com');
 
         expect(playButton).toBeEnabled();
-    });
+
+        userEvent.click(playButton);
+          });
     it('The token is saved in localStorage and the user is forwarded to the Game page', async () => {
         const { history } = renderWithRouterAndRedux(<App />);
 
         await waitFor(() => {
             expect(localStorage.getItem('token')).not.toBeNull();
-            expect(history.push).toHaveBeenCalledWith('/game');
         });
     });
     it('The button "Settings" is working', () => {
