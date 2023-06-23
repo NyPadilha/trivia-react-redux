@@ -2,6 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { shuffleArray } from '../helpers/featFunctions';
+import './GameQuestions.css';
 
 class GameQuestions extends Component {
   state = {
@@ -92,6 +93,7 @@ class GameQuestions extends Component {
                     key={ index }
                     data-testid={ correct === item
                       ? 'correct-answer' : `wrong-answer-${index}` }
+                    className={ disabled && correct === item ? 'correct' : 'wrong' }
                   >
                     {item}
                   </button>
