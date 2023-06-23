@@ -15,6 +15,7 @@ const player = (state = INITIAL_STATE, { type, payload }) => {
       name: payload.name,
       gravatarEmail: payload.email,
     };
+
   default:
     return state;
   }

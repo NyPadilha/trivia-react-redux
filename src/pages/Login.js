@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { returnToken } from '../helpers/API';
-import { addUser } from '../redux/actions';
+import { returnQuestions, returnToken } from '../helpers/API';
+import { addQuestions, addUser } from '../redux/actions';
 
 class Login extends Component {
   state = {
@@ -16,12 +16,17 @@ class Login extends Component {
   };
 
   handleClick = async () => {
+    const time = 1500;
     const { history, dispatch } = this.props;
     dispatch(addUser(this.state));
     const token = await returnToken();
-
+    const response = await returnQuestions(token);
+    dispatch(addQuestions(response));
     localStorage.setItem('token', token);
-    history.push('/gameScreen');
+
+    setInterval(() => {
+      history.push('/gameScreen');
+    }, time);
   };
 
   handleClickConfig = () => {

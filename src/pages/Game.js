@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
+import GameQuestions from '../components/GameQuestions';
 
 export default class Game extends Component {
   render() {
@@ -8,6 +9,9 @@ export default class Game extends Component {
         <header>
           <Header />
         </header>
+        <main>
+          <GameQuestions />
+        </main>
       </div>
     );
   }
