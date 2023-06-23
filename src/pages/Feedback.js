@@ -5,12 +5,12 @@ import Header from '../components/Header';
 
 class Feedback extends Component {
   render() {
-    const MAGIC_NUMBER = 140;
+    const MAGIC_NUMBER = 3;
     const { score, assertions } = this.props;
     return (
       <div>
         <Header />
-        { score <= MAGIC_NUMBER ? (
+        { assertions < MAGIC_NUMBER ? (
           <h3 data-testid="feedback-text">Could be better...</h3>)
           : <h3 data-testid="feedback-text">Well Done!</h3>}
         <h3 data-testid="feedback-total-score">{score}</h3>
