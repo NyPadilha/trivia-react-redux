@@ -10,6 +10,10 @@ export const addQuestions = (questions) => ({
   payload: questions,
 });
 
+export const addScore = (score) => ({
+  type: 'ADD_SCORE',
+  payload: score,
+});
 export const randomArray = (array) => ({
   type: RANDOM_ARRAY,
   payload: array,

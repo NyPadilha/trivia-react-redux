@@ -5,25 +5,58 @@ import { shuffleArray } from '../helpers/featFunctions';
 
 class GameQuestions extends Component {
   state = {
+    timer: 30,
+    answered: false,
+    disabled: false,
     correct: [],
     incorrect: [],
   };
 
   async componentDidMount() {
+    const num = 1000;
+    const intervalId = setInterval(() => {
+      const { timer, answered } = this.state;
+      if (timer > 0 && answered === false) {
+        this.setState(() => ({
+          timer: timer - 1,
+        }));
+      } else {
+        clearInterval(intervalId);
+        this.setState({
+          disabled: true,
+        });
+      }
+    }, num);
     const code = 3;
     const { questions, history } = this.props;
     if (questions.response_code === code) {
       history.push('/');
       localStorage.clear();
     }
-    this.setState({ correct: questions.results[0].correct_answer,
+    this.setState({
+      correct: questions.results[0].correct_answer,
       incorrect: questions.results[0].incorrect_answers,
     });
   }
 
+  handleAnswer(Correct) {
+    const { answered } = this.state;
+    if (answered === false) {
+      this.setState({
+        answered: true,
+        disabled: true,
+      });
+      if (Correct === true) {
+        console.log('Resposta correta! + 10 pontos :)');
+      } else {
+        console.log('Resposta incorreta!');
+      }
+    }
+  }
+
   render() {
     const { questions: { results } } = this.props;
-    const { correct, incorrect } = this.state;
+    const { correct, incorrect, timer, disabled } = this.state;
     const newOptions = [...incorrect, correct];
     return (
       <div>
@@ -31,6 +64,7 @@ class GameQuestions extends Component {
           results
         && (
           <div>
+            <div>{timer}</div>
             <p
               data-testid="question-category"
             >
@@ -47,6 +81,14 @@ class GameQuestions extends Component {
               {
                 shuffleArray(newOptions).map((item, index) => (
                   <button
+                    disabled={ disabled }
+                    onClick={ () => {
+                      if (item === correct) {
+                        this.handleAnswer(true);
+                      } else {
+                        this.handleAnswer(false);
+                      }
+                    } }
                     key={ index }
                     data-testid={ correct === item
                       ? 'correct-answer' : `wrong-answer-${index}` }
