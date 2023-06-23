@@ -2,6 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { shuffleArray } from '../helpers/featFunctions';
+import { addScore } from '../redux/actions';
 import './GameQuestions.css';
 
 class GameQuestions extends Component {
@@ -42,13 +43,47 @@ class GameQuestions extends Component {
 
   handleAnswer(Correct) {
     const { answered } = this.state;
+    const { dispatch } = this.props;
+    const num = 10;
+    const dif1 = 3;
+    const dif2 = 2;
+    const dif3 = 1;
+    const num1 = 30;
+    const num2 = 20;
+    const num3 = 0;
     if (answered === false) {
       this.setState({
         answered: true,
         disabled: true,
       });
       if (Correct === true) {
-        console.log('Resposta correta! + 10 pontos :)');
+        console.log('Resposta correta! + 10 pontos');
+        const { timer } = this.state;
+        if (timer < num1 && timer > num2) {
+          const att = num + (timer * dif1);
+          const rankingString = localStorage.getItem('ranking');
+          const ranking = JSON.parse(rankingString);
+          ranking[0].score = att;
+          const rankingAtualizadoString = JSON.stringify(ranking);
+          localStorage.setItem('ranking', rankingAtualizadoString);
+          dispatch(addScore(att));
+        } else if (timer < num2 && timer > num3) {
+          const att = num + (timer * dif2);
+          const rankingString = localStorage.getItem('ranking');
+          const ranking = JSON.parse(rankingString);
+          ranking[0].score = att;
+          const rankingAtualizadoString = JSON.stringify(ranking);
+          localStorage.setItem('ranking', rankingAtualizadoString);
+          dispatch(addScore(att));
+        } else {
+          const att = num + (timer * dif3);
+          const rankingString = localStorage.getItem('ranking');
+          const ranking = JSON.parse(rankingString);
+          ranking[0].score = att;
+          const rankingAtualizadoString = JSON.stringify(ranking);
+          localStorage.setItem('ranking', rankingAtualizadoString);
+          dispatch(addScore(att));
+        }
       } else {
         console.log('Resposta incorreta!');
       }

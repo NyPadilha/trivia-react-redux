@@ -1,4 +1,4 @@
-import { ADD_QUESTIONS, ADD_USER, RANDOM_ARRAY } from './actionsTypes';
+import { ADD_QUESTIONS, ADD_SCORE, ADD_USER, RANDOM_ARRAY } from './actionsTypes';
 
 export const addUser = (user) => ({
   type: ADD_USER,
@@ -11,7 +11,7 @@ export const addQuestions = (questions) => ({
 });
 
 export const addScore = (score) => ({
-  type: 'ADD_SCORE',
+  type: ADD_SCORE,
   payload: score,
 });
 export const randomArray = (array) => ({

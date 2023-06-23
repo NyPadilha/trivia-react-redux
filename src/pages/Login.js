@@ -22,10 +22,23 @@ class Login extends Component {
     const token = await returnToken();
     const response = await returnQuestions(token);
     localStorage.setItem('token', token);
+
     dispatch(addQuestions(response));
+
     setInterval(() => {
       history.push('/gameScreen');
     }, time);
+    const { score, name } = this.props;
+    const ranking = [
+      {
+        name,
+        score,
+      },
+    ];
+    localStorage.setItem(
+      'ranking',
+      JSON.stringify(ranking),
+    );
   };
 
   handleClickConfig = () => {
@@ -80,4 +93,9 @@ class Login extends Component {
 
 Login.propTypes = PropTypes.shape({}).isRequired;
 
-export default connect()(Login);
+const mapStateToProps = (state) => ({
+  name: state.player.name,
+  score: state.player.score,
+});
+
+export default connect(mapStateToProps)(Login);
