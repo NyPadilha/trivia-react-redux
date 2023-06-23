@@ -21,7 +21,7 @@ describe('Test the <Login.js /> page', () => {
         expect(history.location.pathname).toBe('/');
     });
     it('The button "Play" is disabled if the input name is empty',async () => {
-        renderWithRouterAndRedux(<App />);
+        const {store ,history } = renderWithRouterAndRedux(<App />);
 
         const nameInput = screen.getByTestId('input-player-name');
         const emailInput = screen.getByTestId('input-gravatar-email');
@@ -37,18 +37,22 @@ describe('Test the <Login.js /> page', () => {
         expect(playButton).toBeEnabled();
 
         userEvent.click(playButton);
-        setInterval(() => {
+      await  waitFor(() => {
             expect(history.location.pathname).toBe('/gameScreen');
-        }, 2000);
+        }, { timeout: 3000 });
+        await waitFor( () => {
+            const userEmail = store.getState().player.gravatarEmail;
+            expect(userEmail).toBe('jaguara@gmail.com');
+          }, { timeout: 2000 });
 
 
           });
-    it('The token is saved in localStorage and the user is forwarded to the Game page',  () => {
+    it('The token is saved in localStorage and the user is forwarded to the Game page', async () => {
         const { history } = renderWithRouterAndRedux(<App />);
 
-        setInterval(() => {
+       await waitFor(() => {
             expect(localStorage.getItem('token')).not.toBeNull();
-        }, 2100);
+        }, { timeout: 3000 });
     });
     it('The button "Settings" is working', () => {
         const { history } = renderWithRouterAndRedux(<App />);
