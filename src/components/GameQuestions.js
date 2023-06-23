@@ -190,12 +190,14 @@ class GameQuestions extends Component {
         )
         }
         <button
+          type="button"
           onClick={ () => this.hanleClick2() }
           data-testid="btn-play-again"
         >
           Jogar novamente
         </button>
         <button
+          type="button"
           onClick={ () => this.hanleClick3() }
           data-testid="btn-ranking"
         >

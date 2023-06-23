@@ -9,6 +9,11 @@ export default class Ranking extends Component {
         >
           Ranking
         </h1>
+        <button
+          data-testid="btn-go-home"
+        >
+          <a href="/">Voltar</a>
+        </button>
       </div>
     );
   }
