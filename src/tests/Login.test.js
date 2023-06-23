@@ -1,8 +1,9 @@
 import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
-import renderWithRouterAndRedux from './helpers/renderWithRouterAndRedux';
+
 import App from '../App';
 import userEvent from '@testing-library/user-event';
+import renderWithRouterAndRedux from '../helpers/renderWithRouterAndRedux';
 
 describe('Test the <Login.js /> page', () => {
     it('Should have the necessary elements', () => {

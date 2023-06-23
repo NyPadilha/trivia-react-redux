@@ -1,6 +1,8 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { returnToken } from '../tests/helpers/API';
+import { connect } from 'react-redux';
+import { returnToken } from '../helpers/API';
+import { addUser } from '../redux/actions';
 
 class Login extends Component {
   state = {
@@ -14,8 +16,10 @@ class Login extends Component {
   };
 
   handleClick = async () => {
-    const { history } = this.props;
+    const { history, dispatch } = this.props;
+    dispatch(addUser(this.state));
     const token = await returnToken();
+
     localStorage.setItem('token', token);
     history.push('/gameScreen');
   };
@@ -70,10 +74,6 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
-};
+Login.propTypes = PropTypes.shape({}).isRequired;
 
-export default Login;
+export default connect()(Login);
