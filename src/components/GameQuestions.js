@@ -97,6 +97,27 @@ class GameQuestions extends Component {
     }
   }
 
+  handleColor(disabled, item) {
+    const { correct } = this.state;
+    if (disabled) {
+      if (correct === item) {
+        return 'correct';
+      } return 'wrong';
+    } return '';
+  }
+
+  nextQuestion() {
+    const MAGIC_NUMBER = 4;
+    const { history } = this.props;
+    const { index } = this.state;
+    if (index === MAGIC_NUMBER) history.push('/feedback');
+    this.setState({
+      index: index + 1,
+      answered: false,
+      disabled: false,
+    });
+  }
+
   render() {
     const { correct, timer, disabled, questions, solutions } = this.state;
     return (
@@ -133,13 +154,21 @@ class GameQuestions extends Component {
                     key={ index }
                     data-testid={ correct === item
                       ? 'correct-answer' : `wrong-answer-${index}` }
-                    className={ disabled && correct === item ? 'correct' : 'wrong' }
+                    className={ this.handleColor(disabled, item) }
                   >
                     {item}
                   </button>
                 ))
               }
             </div>
+            { disabled && (
+              <button
+                data-testid="btn-next"
+                onClick={ () => this.nextQuestion() }
+              >
+                Próxima
+              </button>
+            )}
           </div>
         )
         }
