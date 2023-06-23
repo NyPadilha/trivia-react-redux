@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { shuffleArray } from '../helpers/featFunctions';
 import { addScore } from '../redux/actions';
 import './GameQuestions.css';
+import { returnQuestions } from '../helpers/API';
 
 class GameQuestions extends Component {
   state = {
@@ -11,11 +12,16 @@ class GameQuestions extends Component {
     answered: false,
     disabled: false,
     correct: [],
-    incorrect: [],
+    questions: [],
+    solutions: [],
   };
 
   async componentDidMount() {
     const num = 1000;
+    const code = 3;
+    const token = localStorage.getItem('token');
+    const response = await returnQuestions(token);
+    const { history } = this.props;
     const intervalId = setInterval(() => {
       const { timer, answered } = this.state;
       if (timer > 0 && answered === false) {
@@ -29,16 +35,17 @@ class GameQuestions extends Component {
         });
       }
     }, num);
-    const code = 3;
-    const { questions, history } = this.props;
-    if (questions.response_code === code) {
-      history.push('/');
+    if (response.response_code === code) {
       localStorage.clear();
+      history.push('/');
+    } else {
+      this.setState({
+        correct: response.results[0].correct_answer,
+        questions: response.results,
+        solutions: shuffleArray([...response.results[0].incorrect_answers,
+          response.results[0].correct_answer]),
+      });
     }
-    this.setState({
-      correct: questions.results[0].correct_answer,
-      incorrect: questions.results[0].incorrect_answers,
-    });
   }
 
   handleAnswer(Correct) {
@@ -91,31 +98,29 @@ class GameQuestions extends Component {
   }
 
   render() {
-    const { questions: { results } } = this.props;
-    const { correct, incorrect, timer, disabled } = this.state;
-    const newOptions = [...incorrect, correct];
+    const { correct, timer, disabled, questions, solutions } = this.state;
     return (
       <div>
         {
-          results
+          questions.length > 0
         && (
           <div>
             <div>{timer}</div>
             <p
               data-testid="question-category"
             >
-              {results[0].category}
+              {questions[0].category}
             </p>
             <p
               data-testid="question-text"
             >
-              {results[0].question}
+              {questions[0].question}
             </p>
             <div
               data-testid="answer-options"
             >
               {
-                shuffleArray(newOptions).map((item, index) => (
+                solutions.map((item, index) => (
                   <button
                     disabled={ disabled }
                     onClick={ () => {
@@ -139,7 +144,6 @@ class GameQuestions extends Component {
         )
         }
       </div>
-
     );
   }
 }
