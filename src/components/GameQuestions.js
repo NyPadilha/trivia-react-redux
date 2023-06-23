@@ -2,7 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { shuffleArray } from '../helpers/featFunctions';
-import { addScore } from '../redux/actions';
+import { addQuestions, addScore } from '../redux/actions';
 import './GameQuestions.css';
 import { returnQuestions } from '../helpers/API';
 
@@ -14,6 +14,7 @@ class GameQuestions extends Component {
     correct: [],
     questions: [],
     solutions: [],
+    index: 0,
   };
 
   async componentDidMount() {
@@ -21,7 +22,8 @@ class GameQuestions extends Component {
     const code = 3;
     const token = localStorage.getItem('token');
     const response = await returnQuestions(token);
-    const { history } = this.props;
+    const { history, dispatch } = this.props;
+    dispatch(addQuestions(response.results));
     const intervalId = setInterval(() => {
       const { timer, answered } = this.state;
       if (timer > 0 && answered === false) {
@@ -35,6 +37,7 @@ class GameQuestions extends Component {
         });
       }
     }, num);
+
     if (response.response_code === code) {
       localStorage.clear();
       history.push('/');
@@ -70,7 +73,7 @@ class GameQuestions extends Component {
           const att = num + (timer * dif1);
           const rankingString = localStorage.getItem('ranking');
           const ranking = JSON.parse(rankingString);
-          ranking[0].score = att;
+          ranking[0].score = att + ranking[0].score;
           const rankingAtualizadoString = JSON.stringify(ranking);
           localStorage.setItem('ranking', rankingAtualizadoString);
           dispatch(addScore(att));
@@ -78,7 +81,7 @@ class GameQuestions extends Component {
           const att = num + (timer * dif2);
           const rankingString = localStorage.getItem('ranking');
           const ranking = JSON.parse(rankingString);
-          ranking[0].score = att;
+          ranking[0].score = att + ranking[0].score;
           const rankingAtualizadoString = JSON.stringify(ranking);
           localStorage.setItem('ranking', rankingAtualizadoString);
           dispatch(addScore(att));
@@ -86,7 +89,7 @@ class GameQuestions extends Component {
           const att = num + (timer * dif3);
           const rankingString = localStorage.getItem('ranking');
           const ranking = JSON.parse(rankingString);
-          ranking[0].score = att;
+          ranking[0].score = att + ranking[0].score;
           const rankingAtualizadoString = JSON.stringify(ranking);
           localStorage.setItem('ranking', rankingAtualizadoString);
           dispatch(addScore(att));
@@ -108,18 +111,22 @@ class GameQuestions extends Component {
 
   nextQuestion() {
     const MAGIC_NUMBER = 4;
-    const { history } = this.props;
+    const { history, questions } = this.props;
     const { index } = this.state;
     if (index === MAGIC_NUMBER) history.push('/feedback');
+    const indexUpped = index === 0 ? 1 : index;
     this.setState({
       index: index + 1,
       answered: false,
       disabled: false,
+      correct: questions[indexUpped].correct_answer,
+      solutions: shuffleArray([...questions[indexUpped].incorrect_answers,
+        questions[indexUpped].correct_answer]),
     });
   }
 
   render() {
-    const { correct, timer, disabled, questions, solutions } = this.state;
+    const { correct, timer, disabled, questions, solutions, index } = this.state;
     return (
       <div>
         {
@@ -130,18 +137,18 @@ class GameQuestions extends Component {
             <p
               data-testid="question-category"
             >
-              {questions[0].category}
+              {questions[index].category}
             </p>
             <p
               data-testid="question-text"
             >
-              {questions[0].question}
+              {questions[index].question}
             </p>
             <div
               data-testid="answer-options"
             >
               {
-                solutions.map((item, index) => (
+                solutions.map((item, number) => (
                   <button
                     disabled={ disabled }
                     onClick={ () => {
@@ -151,9 +158,9 @@ class GameQuestions extends Component {
                         this.handleAnswer(false);
                       }
                     } }
-                    key={ index }
+                    key={ number }
                     data-testid={ correct === item
-                      ? 'correct-answer' : `wrong-answer-${index}` }
+                      ? 'correct-answer' : `wrong-answer-${number}` }
                     className={ this.handleColor(disabled, item) }
                   >
                     {item}
@@ -177,7 +184,10 @@ class GameQuestions extends Component {
   }
 }
 
-const mapStateToProps = ({ question: { questions }, arraySolution: { solutions } }) => ({
+const mapStateToProps = (
+  { question: { questions },
+    arraySolution: { solutions } },
+) => ({
   questions, solutions,
 });
 

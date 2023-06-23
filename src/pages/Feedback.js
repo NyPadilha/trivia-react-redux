@@ -22,6 +22,6 @@ const mapStateToProps = ({ player: { score } }) => ({
   score,
 });
 
-Feedback.propTypes = { score: PropTypes.string.isRequired };
+Feedback.propTypes = PropTypes.shape({}).isRequired;
 
 export default connect(mapStateToProps)(Feedback);
