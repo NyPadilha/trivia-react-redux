@@ -21,9 +21,8 @@ class Login extends Component {
     dispatch(addUser(this.state));
     const token = await returnToken();
     const response = await returnQuestions(token);
-    dispatch(addQuestions(response));
     localStorage.setItem('token', token);
-
+    dispatch(addQuestions(response));
     setInterval(() => {
       history.push('/gameScreen');
     }, time);

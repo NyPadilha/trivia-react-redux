@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { handleGravatar } from '../helpers/API';
+import { handleGravatar } from '../helpers/featFunctions';
 
 class Header extends Component {
   render() {

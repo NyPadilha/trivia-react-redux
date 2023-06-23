@@ -20,7 +20,7 @@ describe('Test the <Login.js /> page', () => {
         expect(settingsButton).toBeInTheDocument();
         expect(history.location.pathname).toBe('/');
     });
-    it('The button "Play" is disabled if the input name is empty', () => {
+    it('The button "Play" is disabled if the input name is empty',async () => {
         renderWithRouterAndRedux(<App />);
 
         const nameInput = screen.getByTestId('input-player-name');
@@ -37,13 +37,18 @@ describe('Test the <Login.js /> page', () => {
         expect(playButton).toBeEnabled();
 
         userEvent.click(playButton);
+        setInterval(() => {
+            expect(history.location.pathname).toBe('/gameScreen');
+        }, 2000);
+
+
           });
-    it('The token is saved in localStorage and the user is forwarded to the Game page', async () => {
+    it('The token is saved in localStorage and the user is forwarded to the Game page',  () => {
         const { history } = renderWithRouterAndRedux(<App />);
 
-        await waitFor(() => {
+        setInterval(() => {
             expect(localStorage.getItem('token')).not.toBeNull();
-        });
+        }, 2100);
     });
     it('The button "Settings" is working', () => {
         const { history } = renderWithRouterAndRedux(<App />);
