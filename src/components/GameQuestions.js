@@ -125,6 +125,16 @@ class GameQuestions extends Component {
     });
   }
 
+  hanleClick2() {
+    const { history } = this.props;
+    history.push('/');
+  }
+
+  hanleClick3() {
+    const { history } = this.props;
+    history.push('/ranking');
+  }
+
   render() {
     const { correct, timer, disabled, questions, solutions, index } = this.state;
     return (
@@ -179,6 +189,18 @@ class GameQuestions extends Component {
           </div>
         )
         }
+        <button
+          onClick={ () => this.hanleClick2() }
+          data-testid="btn-play-again"
+        >
+          Jogar novamente
+        </button>
+        <button
+          onClick={ () => this.hanleClick3() }
+          data-testid="btn-ranking"
+        >
+          Ranking
+        </button>
       </div>
     );
   }
