@@ -21,7 +21,7 @@ class Login extends Component {
     dispatch(addUser(this.state));
     const token = await returnToken();
     localStorage.setItem('token', token);
-    setInterval(() => {
+    setTimeout(() => {
       history.push('/gameScreen');
     }, time);
     const { score, name } = this.props;
