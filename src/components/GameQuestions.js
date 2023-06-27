@@ -18,7 +18,7 @@ class GameQuestions extends Component {
   };
 
   async componentDidMount() {
-    const num = 1500;
+    const num = 1000;
     const code = 3;
     const token = localStorage.getItem('token');
     const response = await returnQuestions(token);
@@ -37,7 +37,6 @@ class GameQuestions extends Component {
         });
       }
     }, num);
-
     if (response.response_code === code) {
       localStorage.clear();
       history.push('/');
