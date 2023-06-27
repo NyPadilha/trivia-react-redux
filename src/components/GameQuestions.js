@@ -50,6 +50,23 @@ class GameQuestions extends Component {
     }
   }
 
+  handleTime = () => {
+    const num = 1000;
+    const intervalId = setInterval(() => {
+      const { timer, answered } = this.state;
+      if (timer > 0 && answered === false) {
+        this.setState(() => ({
+          timer: timer - 1,
+        }));
+      } else {
+        clearInterval(intervalId);
+        this.setState({
+          disabled: true,
+        });
+      }
+    }, num);
+  };
+
   handleAnswer = (Correct) => {
     const { answered } = this.state;
     const { dispatch } = this.props;
@@ -110,6 +127,7 @@ class GameQuestions extends Component {
     if (index === MAGIC_NUMBER) history.push('/feedback');
     const indexUpped = index === 0 ? 1 : index;
     this.setState({
+      timer: 30,
       index: index + 1,
       answered: false,
       disabled: false,
@@ -209,9 +227,12 @@ class GameQuestions extends Component {
                 type="button"
                 className="btn-next btn"
                 data-testid="btn-next"
-                onClick={ this.nextQuestion }
+                onClick={ () => {
+                  this.nextQuestion();
+                  this.handleTime();
+                } }
               >
-                Próxima
+                Next
               </button>
             )}
           </div>
@@ -222,13 +243,8 @@ class GameQuestions extends Component {
   }
 }
 
-const mapStateToProps = (
-  { question: { questions },
-    arraySolution: { solutions } },
-) => ({
+const mapStateToProps = ({ question: { questions }, arraySolution: { solutions } }) => ({
   questions, solutions,
 });
-
 GameQuestions.propTypes = PropTypes.shape({}).isRequired;
-
 export default connect(mapStateToProps)(GameQuestions);

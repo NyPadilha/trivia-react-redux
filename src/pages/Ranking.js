@@ -9,6 +9,9 @@ export default class Ranking extends Component {
         >
           Ranking
         </h1>
+        <p>
+          Em breve na proxima atualização você podera ver o ranking!
+        </p>
         <button
           data-testid="btn-go-home"
         >
