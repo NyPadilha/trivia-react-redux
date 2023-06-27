@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addUser } from '../redux/actions';
 import { returnToken } from '../helpers/API';
+import './Login.css';
 
 class Login extends Component {
   state = {
@@ -60,14 +61,17 @@ class Login extends Component {
   render() {
     const { name, email } = this.state;
     return (
-      <div>
+      <div className="login-contain">
+        <div className="logo">TRIVIA</div>
         <main>
-          <form>
+          <form className="form-contain">
             <label>
               Name:
               <input
                 type="text"
                 name="name"
+                className="input-name"
+                placeholder="Qual é o seu nome?"
                 data-testid="input-player-name"
                 onChange={ this.handlechange }
               />
@@ -75,13 +79,16 @@ class Login extends Component {
             <label>
               E-mail:
               <input
+                className="input-email"
                 type="email"
                 name="email"
+                placeholder="Qual é o seu e-mail do gravatar?"
                 data-testid="input-gravatar-email"
                 onChange={ this.handlechange }
               />
             </label>
             <button
+              className="btn-play"
               type="button"
               disabled={ !name || !email }
               data-testid="btn-play"
@@ -89,13 +96,15 @@ class Login extends Component {
             >
               Play
             </button>
+            <button
+              className="btn-settings"
+              type="button"
+              data-testid="btn-settings"
+              onClick={ this.handleClickConfig }
+            >
+              Configurações
+            </button>
           </form>
-          <button
-            data-testid="btn-settings"
-            onClick={ this.handleClickConfig }
-          >
-            Configurações
-          </button>
         </main>
       </div>
     );
