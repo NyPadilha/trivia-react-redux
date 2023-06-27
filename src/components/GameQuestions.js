@@ -18,7 +18,7 @@ class GameQuestions extends Component {
   };
 
   async componentDidMount() {
-    const num = 1000;
+    const num = 1500;
     const code = 3;
     const token = localStorage.getItem('token');
     const response = await returnQuestions(token);
@@ -138,50 +138,82 @@ class GameQuestions extends Component {
   render() {
     const { correct, timer, disabled, questions, solutions, index } = this.state;
     return (
-      <div>
+      <div className="game-contain">
         {
           questions.length > 0
-        && (
-          <div>
-            <div>{timer}</div>
-            <p
-              data-testid="question-category"
-            >
-              {questions[index].category}
-            </p>
-            <p
-              data-testid="question-text"
-            >
-              {questions[index].question}
-            </p>
-            <div
-              data-testid="answer-options"
-            >
-              {
-                solutions.map((item, number) => (
-                  <button
-                    type="button"
-                    disabled={ disabled }
-                    onClick={ () => {
-                      if (item === correct) {
-                        this.handleAnswer(true);
-                      } else {
-                        this.handleAnswer(false);
-                      }
-                    } }
-                    key={ number }
-                    data-testid={ correct === item
-                      ? 'correct-answer' : `wrong-answer-${number}` }
-                    className={ this.handleColor(disabled, item) }
-                  >
-                    {item}
-                  </button>
-                ))
-              }
+          && (
+            <div className="game-questions">
+              <div className="logo game-logo">TRIVIA</div>
+              <div className="questions-contain">
+                <p
+                  className="category"
+                  data-testid="question-category"
+                >
+                  {questions[index].category}
+                </p>
+                <p
+                  className="question"
+                  data-testid="question-text"
+                >
+                  {questions[index].question}
+                </p>
+                <div className="time">{`Tempo: ${timer}s`}</div>
+              </div>
+              <div>
+                <div
+                  className="answers-options"
+                  data-testid="answer-options"
+                >
+                  {
+                    solutions.map((item, number) => (
+                      <button
+                        type="button"
+                        disabled={ disabled }
+                        onClick={ () => {
+                          if (item === correct) {
+                            this.handleAnswer(true);
+                          } else {
+                            this.handleAnswer(false);
+                          }
+                        } }
+                        key={ number }
+                        data-testid={ correct === item
+                          ? 'correct-answer' : `wrong-answer-${number}` }
+                        className={ `answer ${this.handleColor(disabled, item)}` }
+                      >
+                        {item}
+                      </button>
+                    ))
+                  }
+                </div>
+              </div>
             </div>
+          )
+        }
+        <div className="footer">
+          <div className="btn-contain">
+            <button
+              className="btn-play-again btn"
+              type="button"
+              onClick={ () => this.hanleClick2() }
+              data-testid="btn-play-again"
+            >
+              Play Again
+            </button>
+            <button
+              className="btn-ranking btn"
+              type="button"
+              onClick={ () => this.hanleClick3() }
+              data-testid="btn-ranking"
+            >
+              Ranking
+            </button>
+          </div>
+          <div className="btn-contain-next">
             { disabled && (
               <button
                 type="button"
+                className="btn-next btn"
                 data-testid="btn-next"
                 onClick={ () => this.nextQuestion() }
               >
@@ -189,22 +221,8 @@ class GameQuestions extends Component {
               </button>
             )}
           </div>
-        )
-        }
-        <button
-          type="button"
-          onClick={ () => this.hanleClick2() }
-          data-testid="btn-play-again"
-        >
-          Jogar novamente
-        </button>
-        <button
-          type="button"
-          onClick={ () => this.hanleClick3() }
-          data-testid="btn-ranking"
-        >
-          Ranking
-        </button>
+        </div>
+
       </div>
     );
   }

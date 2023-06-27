@@ -7,7 +7,7 @@ export default class Game extends Component {
   render() {
     const { history } = this.props;
     return (
-      <div>
+      <div className="game">
         <header>
           <Header />
         </header>

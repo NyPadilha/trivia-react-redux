@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import './Feedback.css';
 
 class Feedback extends Component {
   hanleClick3 = () => {
@@ -20,27 +21,61 @@ class Feedback extends Component {
     return (
       <div>
         <Header />
-        { assertions < MAGIC_NUMBER ? (
-          <h3 data-testid="feedback-text">Could be better...</h3>)
-          : <h3 data-testid="feedback-text">Well Done!</h3>}
-        <h3 data-testid="feedback-total-score">{score}</h3>
-        <h3 data-testid="feedback-total-question">{assertions}</h3>
-        <button
-          data-testid="btn-play-again"
-          type="button"
-          onClick={ this.hanleClick2 }
-        >
-          Jogar novamente
+        <div className="feedback-contain">
+          <div className="logo feedback">
+            TRIVIA
+          </div>
+          <div className="feedback-result">
+            {
+              assertions < MAGIC_NUMBER ? (
+                <h3
+                  className="feedback-text"
+                  data-testid="feedback-text"
+                >
+                  Could be better...
 
-        </button>
+                </h3>
+              ) : (
+                <h3
+                  className="feedback-text"
+                  data-testid="feedback-text"
+                >
+                  Well Done!
+                </h3>
+              )
+            }
+            <div className="feedback-questions">
+              <p
+                data-testid="feedback-total-question"
+              >
+                {`You're right ${assertions} questions!`}
+              </p>
+              <p data-testid="feedback-total-score">
+                {`A total of ${score} points`}
+              </p>
+            </div>
+          </div>
+          <div className="feedback-btn">
+            <button
+              className="btn-play-again"
+              data-testid="btn-play-again"
+              type="button"
+              onClick={ this.hanleClick2 }
+            >
+              Play Again
 
-        <button
-          type="button"
-          onClick={ this.hanleClick3 }
-          data-testid="btn-ranking"
-        >
-          Ranking
-        </button>
+            </button>
+
+            <button
+              type="button"
+              className="btn-ranking"
+              onClick={ this.hanleClick3 }
+              data-testid="btn-ranking"
+            >
+              Ranking
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
