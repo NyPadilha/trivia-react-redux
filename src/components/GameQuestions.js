@@ -51,7 +51,7 @@ class GameQuestions extends Component {
     }
   }
 
-  handleAnswer = (Correct) => {
+  handleAnswer(Correct) {
     const { answered } = this.state;
     const { dispatch } = this.props;
     const num = 10;
@@ -98,18 +98,18 @@ class GameQuestions extends Component {
         console.log('Resposta incorreta!');
       }
     }
-  };
+  }
 
-  handleColor = (disabled, item) => {
+  handleColor(disabled, item) {
     const { correct } = this.state;
     if (disabled) {
       if (correct === item) {
         return 'correct';
       } return 'wrong';
     } return '';
-  };
+  }
 
-  nextQuestion = () => {
+  nextQuestion() {
     const MAGIC_NUMBER = 4;
     const { history, questions } = this.props;
     const { index } = this.state;
@@ -123,7 +123,17 @@ class GameQuestions extends Component {
       solutions: shuffleArray([...questions[indexUpped].incorrect_answers,
         questions[indexUpped].correct_answer]),
     });
-  };
+  }
+
+  hanleClick2() {
+    const { history } = this.props;
+    history.push('/');
+  }
+
+  hanleClick3() {
+    const { history } = this.props;
+    history.push('/ranking');
+  }
 
   render() {
     const { correct, timer, disabled, questions, solutions, index } = this.state;
@@ -150,6 +160,7 @@ class GameQuestions extends Component {
               {
                 solutions.map((item, number) => (
                   <button
+                    type="button"
                     disabled={ disabled }
                     onClick={ () => {
                       if (item === correct) {
@@ -170,8 +181,9 @@ class GameQuestions extends Component {
             </div>
             { disabled && (
               <button
+                type="button"
                 data-testid="btn-next"
-                onClick={ this.nextQuestion }
+                onClick={ () => this.nextQuestion() }
               >
                 Próxima
               </button>
@@ -179,7 +191,20 @@ class GameQuestions extends Component {
           </div>
         )
         }
-
+        <button
+          type="button"
+          onClick={ () => this.hanleClick2() }
+          data-testid="btn-play-again"
+        >
+          Jogar novamente
+        </button>
+        <button
+          type="button"
+          onClick={ () => this.hanleClick3() }
+          data-testid="btn-ranking"
+        >
+          Ranking
+        </button>
       </div>
     );
   }
