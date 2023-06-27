@@ -108,7 +108,7 @@
 }
 
 .footer {
-  align-items: start;
+  align-items: flex-start;
   background: #3c1b7a;
   border-bottom: 1px solid #03167e;
   display: flex;
@@ -126,7 +126,7 @@
 
 .btn-contain {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   margin-top: 10px;
   width: 470px;
 }
@@ -141,7 +141,7 @@
 
 .btn-contain-next {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   width: 380px;
 }
 

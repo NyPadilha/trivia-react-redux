@@ -18,7 +18,7 @@ class GameQuestions extends Component {
   };
 
   async componentDidMount() {
-    const num = 1000;
+    const num = 1500;
     const code = 3;
     const token = localStorage.getItem('token');
     const response = await returnQuestions(token);
@@ -198,7 +198,7 @@ class GameQuestions extends Component {
               onClick={ () => this.hanleClick2() }
               data-testid="btn-play-again"
             >
-              Jogar novamente
+              Play Again
             </button>
             <button
               className="btn-ranking btn"
