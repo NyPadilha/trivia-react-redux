@@ -1,0 +1,25 @@
+.header-contain {
+  align-items: center;
+  border-bottom: 1px solid #03167e;
+  display: flex;
+  flex-shrink: 0;
+  height: 70px;
+  justify-content: end;
+  padding: 0 30px;
+}
+
+.img-gravatar {
+  border-radius: 50%;
+  height: 50px;
+  margin-right: 10px;
+  width: 50px;
+}
+
+.user {
+  display: flex;
+  margin: 0 90px;
+}
+
+.score {
+  margin-right: 30px;
+}
