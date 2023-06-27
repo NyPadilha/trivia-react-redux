@@ -18,7 +18,7 @@ class GameQuestions extends Component {
   };
 
   async componentDidMount() {
-    const num = 1500;
+    const num = 1000;
     const code = 3;
     const token = localStorage.getItem('token');
     const response = await returnQuestions(token);
@@ -37,7 +37,6 @@ class GameQuestions extends Component {
         });
       }
     }, num);
-
     if (response.response_code === code) {
       localStorage.clear();
       history.push('/');
@@ -51,7 +50,24 @@ class GameQuestions extends Component {
     }
   }
 
-  handleAnswer(Correct) {
+  handleTime = () => {
+    const num = 1000;
+    const intervalId = setInterval(() => {
+      const { timer, answered } = this.state;
+      if (timer > 0 && answered === false) {
+        this.setState(() => ({
+          timer: timer - 1,
+        }));
+      } else {
+        clearInterval(intervalId);
+        this.setState({
+          disabled: true,
+        });
+      }
+    }, num);
+  };
+
+  handleAnswer = (Correct) => {
     const { answered } = this.state;
     const { dispatch } = this.props;
     const num = 10;
@@ -71,11 +87,6 @@ class GameQuestions extends Component {
         const { timer } = this.state;
         if (timer < num1 && timer > num2) {
           const att = num + (timer * dif1);
-          const rankingString = localStorage.getItem('ranking');
-          const ranking = JSON.parse(rankingString);
-          ranking[0].score = att + ranking[0].score;
-          const rankingAtualizadoString = JSON.stringify(ranking);
-          localStorage.setItem('ranking', rankingAtualizadoString);
           dispatch(addScore(att));
         } else if (timer < num2 && timer > num3) {
           const att = num + (timer * dif2);
@@ -98,24 +109,25 @@ class GameQuestions extends Component {
         console.log('Resposta incorreta!');
       }
     }
-  }
+  };
 
-  handleColor(disabled, item) {
+  handleColor = (disabled, item) => {
     const { correct } = this.state;
     if (disabled) {
       if (correct === item) {
         return 'correct';
       } return 'wrong';
     } return '';
-  }
+  };
 
-  nextQuestion() {
+  nextQuestion = () => {
     const MAGIC_NUMBER = 4;
     const { history, questions } = this.props;
     const { index } = this.state;
     if (index === MAGIC_NUMBER) history.push('/feedback');
     const indexUpped = index === 0 ? 1 : index;
     this.setState({
+      timer: 30,
       index: index + 1,
       answered: false,
       disabled: false,
@@ -123,17 +135,17 @@ class GameQuestions extends Component {
       solutions: shuffleArray([...questions[indexUpped].incorrect_answers,
         questions[indexUpped].correct_answer]),
     });
-  }
+  };
 
-  hanleClick2() {
+  hanleClick2 = () => {
     const { history } = this.props;
     history.push('/');
-  }
+  };
 
-  hanleClick3() {
+  hanleClick3 = () => {
     const { history } = this.props;
     history.push('/ranking');
-  }
+  };
 
   render() {
     const { correct, timer, disabled, questions, solutions, index } = this.state;
@@ -195,7 +207,7 @@ class GameQuestions extends Component {
             <button
               className="btn-play-again btn"
               type="button"
-              onClick={ () => this.hanleClick2() }
+              onClick={ this.hanleClick2 }
               data-testid="btn-play-again"
             >
               Play Again
@@ -203,7 +215,7 @@ class GameQuestions extends Component {
             <button
               className="btn-ranking btn"
               type="button"
-              onClick={ () => this.hanleClick3() }
+              onClick={ this.hanleClick3 }
               data-testid="btn-ranking"
             >
               Ranking
@@ -215,9 +227,12 @@ class GameQuestions extends Component {
                 type="button"
                 className="btn-next btn"
                 data-testid="btn-next"
-                onClick={ () => this.nextQuestion() }
+                onClick={ () => {
+                  this.nextQuestion();
+                  this.handleTime();
+                } }
               >
-                Próxima
+                Next
               </button>
             )}
           </div>
@@ -228,13 +243,8 @@ class GameQuestions extends Component {
   }
 }
 
-const mapStateToProps = (
-  { question: { questions },
-    arraySolution: { solutions } },
-) => ({
+const mapStateToProps = ({ question: { questions }, arraySolution: { solutions } }) => ({
   questions, solutions,
 });
-
 GameQuestions.propTypes = PropTypes.shape({}).isRequired;
-
 export default connect(mapStateToProps)(GameQuestions);
