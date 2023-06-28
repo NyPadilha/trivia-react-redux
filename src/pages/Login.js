@@ -25,32 +25,6 @@ class Login extends Component {
     setTimeout(() => {
       history.push('/gameScreen');
     }, time);
-    const { score, name } = this.props;
-    const verifRanking = JSON.parse(localStorage.getItem('ranking'));
-    if (verifRanking) {
-      const newRanking = [
-        ...verifRanking,
-        {
-          name,
-          score,
-        },
-      ];
-      localStorage.setItem(
-        'ranking',
-        JSON.stringify(newRanking),
-      );
-    } else {
-      const ranking = [
-        {
-          name,
-          score,
-        },
-      ];
-      localStorage.setItem(
-        'ranking',
-        JSON.stringify(ranking),
-      );
-    }
   };
 
   handleClickConfig = () => {

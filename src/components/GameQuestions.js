@@ -90,19 +90,9 @@ class GameQuestions extends Component {
           dispatch(addScore(att));
         } else if (timer < num2 && timer > num3) {
           const att = num + (timer * dif2);
-          const rankingString = localStorage.getItem('ranking');
-          const ranking = JSON.parse(rankingString);
-          ranking[0].score = att + ranking[0].score;
-          const rankingAtualizadoString = JSON.stringify(ranking);
-          localStorage.setItem('ranking', rankingAtualizadoString);
           dispatch(addScore(att));
         } else {
           const att = num + (timer * dif3);
-          const rankingString = localStorage.getItem('ranking');
-          const ranking = JSON.parse(rankingString);
-          ranking[0].score = att + ranking[0].score;
-          const rankingAtualizadoString = JSON.stringify(ranking);
-          localStorage.setItem('ranking', rankingAtualizadoString);
           dispatch(addScore(att));
         }
       } else {
